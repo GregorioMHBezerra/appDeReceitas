@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterAndRedux from './utils/rwrar';
 
-describe('.: Testa página <Meals> :.', () => {
+describe('.: Testa component <Footer> :.', () => {
   const TestEmail = 'test@example.com';
   const TestPassword = 'app123456';
 
@@ -15,7 +15,7 @@ describe('.: Testa página <Meals> :.', () => {
   const TestIdBtnIconDrinks = 'drinks-bottom-btn';
   const TestIdBtnIconMeals = 'meals-bottom-btn';
 
-  test('1 <Footer> Se página renderiza rota /drinks', async () => {
+  test('1 <Footer> Se component renderiza rota /drinks', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
 
     const inputEmail = screen.getByTestId(TestIdEmailInput);
@@ -35,7 +35,7 @@ describe('.: Testa página <Meals> :.', () => {
     });
   });
 
-  test('2 <Footer> Se página renderiza rota /meals', async () => {
+  test('2 <Footer> Se component renderiza rota /meals', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
 
     const inputEmail = screen.getByTestId(TestIdEmailInput);
@@ -60,7 +60,7 @@ describe('.: Testa página <Meals> :.', () => {
   });
 
   // npm run test-coverage -- --collectCoverageFrom=src/components/Footer.jsx
-  // npm run test Footer.test.jsx
+  // npm run test Footer.test.js
 });
 
 // Requisitos 18: Jéssica Pironato, Josiane Oliveira e Patrick Fonseca;
