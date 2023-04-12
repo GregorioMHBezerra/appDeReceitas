@@ -25,10 +25,21 @@ class DoneRecipes extends Component {
 
     const localStorage = getKeyOnStorage(DONE_RECIPES_KEY);
     const localStorageToState = localStorage ? [...localStorage] : [];
-    console.log(localStorageToState);
 
     this.setState({ localStorage: localStorageToState });
   }
+
+  filterButtons = (filter = true) => {
+    const localStorage = getKeyOnStorage(DONE_RECIPES_KEY);
+    const localStorageToState = localStorage ? [...localStorage] : [];
+    const teste = localStorageToState.filter((recipe) => recipe.type === filter);
+    this.setState({ localStorage: teste });
+  };
+
+  resetFilter = () => {
+    const localStorage = getKeyOnStorage(DONE_RECIPES_KEY);
+    this.setState({ localStorage });
+  };
 
   render() {
     const { history } = this.props;
@@ -40,12 +51,26 @@ class DoneRecipes extends Component {
         {copyText && <h3>Link copied!</h3>}
         {/* <h1 >Done Recipes</h1> */}
         <section>
-          <button data-testid="filter-by-meal-btn">Meals</button>
-          <button data-testid="filter-by-drink-btn">Drinks</button>
-          <button data-testid="filter-by-all-btn">All</button>
+          <button
+            data-testid="filter-by-meal-btn"
+            onClick={ () => this.filterButtons('meal') }
+          >
+            Meals
+          </button>
+          <button
+            data-testid="filter-by-drink-btn"
+            onClick={ () => this.filterButtons('drink') }
+          >
+            Drinks
+          </button>
+          <button
+            data-testid="filter-by-all-btn"
+            onClick={ () => this.resetFilter() }
+          >
+            All
+          </button>
         </section>
         { localStorage.length > 0 && (
-          // tem que utilizar os botões do filtro para passar apenas localStorage.type === 'meal' ou localStorage.type === 'drink'
           localStorage.map((recipe, index) => {
             if (recipe.type === 'meal') {
               return (
