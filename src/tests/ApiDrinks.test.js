@@ -70,7 +70,7 @@ describe('.: Testa API <Drinks> :.', () => {
     test('1. Se API retorna receita por Categoria corretamente', async () => {
       renderWithRouterAndRedux(<App />);
 
-      const drinkCategory = 'Ordinary Drink';
+      const drinkCategory = /Ordinary Drink/i;
       const returnApi = await getApiDrinkByCategory(drinkCategory);
 
       expect(Array.isArray(returnApi)).toBe(true);
