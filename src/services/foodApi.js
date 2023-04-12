@@ -26,7 +26,7 @@ export const getApiFoodByFirstLetter = async (firstLetter) => {
 };
 
 export const getApiFoodByCategory = async (category) => {
-  const urlApi = `https://www.themealdb.com/api/json/v1/1/search.php?c=${category}`;
+  const urlApi = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`;
 
   const response = await fetch(urlApi);
   const responseJson = await response.json();

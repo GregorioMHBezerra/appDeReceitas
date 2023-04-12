@@ -26,7 +26,7 @@ export const getApiDrinkByFirstLetter = async (firstLetter) => {
 };
 
 export const getApiDrinkByCategory = async (category) => {
-  const urlApi = `https://www.thecocktaildb.com/api/json/v1/1/search.php?c=${category}`;
+  const urlApi = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`;
 
   const response = await fetch(urlApi);
   const responseJson = await response.json();
