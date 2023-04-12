@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
 import shareIcon from '../images/shareIcon.svg';
+import blackHeart from '../images/blackHeartIcon.svg';
 
-class DrinksCard extends Component {
+class FavoriteDrinksCard extends Component {
   state = {
     copyText: false,
   };
 
   render() {
     const { copyText } = this.state;
-    const { index, recipe, history } = this.props;
+    const { index, recipe, history, func } = this.props;
     return (
       <section>
         <button type="button" onClick={ () => history.push(`/drinks/${recipe.id}`) }>
@@ -30,7 +31,6 @@ class DrinksCard extends Component {
         <h2 data-testid={ `${index}-horizontal-top-text` }>
           {`${recipe.alcoholicOrNot}`}
         </h2>
-        <h2 data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</h2>
         {copyText && <h3>Link copied!</h3>}
         <button
           className="buttonShareRecipe"
@@ -45,14 +45,25 @@ class DrinksCard extends Component {
             alt="share"
           />
         </button>
+        <button
+          type="button"
+          className="buttonFavoriteRecipe"
+          onClick={ () => func(recipe) }
+        >
+          <img
+            data-testid={ `${index}-horizontal-favorite-btn` }
+            src={ blackHeart }
+            alt="favorite"
+          />
+        </button>
       </section>
 
     );
   }
 }
 
-DrinksCard.propTypes = {
+FavoriteDrinksCard.propTypes = {
   nameState: PropTypes.string,
 }.isRequired;
 
-export default DrinksCard;
+export default FavoriteDrinksCard;

@@ -51,7 +51,6 @@ class MealsCard extends Component {
             alt="share"
           />
         </button>
-
       </section>
 
     );
