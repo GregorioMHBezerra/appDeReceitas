@@ -1,9 +1,12 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { screen, act } from '@testing-library/react';
-import renderWithRouterAndRedux from '../services/rwrar';
+import { screen, waitFor } from '@testing-library/react';
+import copy from 'clipboard-copy';
+import renderWithRouterAndRedux from './utils/rwrar';
 import fetch from '../../cypress/mocks/fetch';
 import App from '../App';
+
+jest.mock('clipboard-copy');
 
 describe('Testa o componente Details', () => {
   beforeEach(() => {
@@ -20,12 +23,11 @@ describe('Testa o componente Details', () => {
   const TestIdBtnRecipeFavorite = 'favorite-btn';
   const testPathMealCorba = '/meals/52977';
 
-  it('1.<Meals>Testa a renderização correta em Meals', async () => {
-    const { history } = renderWithRouterAndRedux(<App />);
-
-    await act(async () => {
-      history.push(testPathMealCorba);
-    });
+  it('1. <Meals> Testa a renderização correta em Meals', async () => {
+    renderWithRouterAndRedux(
+      <App />,
+      { initialEntries: [testPathMealCorba] },
+    );
 
     const image = await screen.findByTestId(TestIdRecipeImage);
     const title = await screen.findByTestId(TestIdRecipeTitle);
@@ -40,12 +42,11 @@ describe('Testa o componente Details', () => {
     expect(video).toBeVisible();
   });
 
-  it('2.<Drinks>Testa a renderização correta em Drinks', async () => {
-    const { history } = renderWithRouterAndRedux(<App />);
-
-    await act(async () => {
-      history.push('/drinks/15997');
-    });
+  it('2. <Drinks> Testa a renderização correta em Drinks', async () => {
+    renderWithRouterAndRedux(
+      <App />,
+      { initialEntries: ['/drinks/15997'] },
+    );
 
     const image = await screen.findByTestId('recipe-photo');
     const title = await screen.findByTestId('recipe-title');
@@ -59,12 +60,11 @@ describe('Testa o componente Details', () => {
     expect(instructions).toBeVisible();
   });
 
-  it('3.<Meals>Testa botão StartRecipe', async () => {
-    const { history } = renderWithRouterAndRedux(<App />);
-
-    await act(async () => {
-      history.push(testPathMealCorba);
-    });
+  it('3. <Meals> Testa botão StartRecipe', async () => {
+    const { history } = renderWithRouterAndRedux(
+      <App />,
+      { initialEntries: [testPathMealCorba] },
+    );
 
     const buttonStartRecipe = await screen.findByTestId(TestIdBtnRecipeStart);
     expect(buttonStartRecipe).toBeInTheDocument();
@@ -73,32 +73,61 @@ describe('Testa o componente Details', () => {
     expect(history.location.pathname).toBe('/meals/52977/in-progress');
   });
 
-  it('4.<Meals>Testa botão ShareRecipe', async () => {
-    const { history } = renderWithRouterAndRedux(<App />);
+  it('4. <Meals> Testa botão ShareRecipe', async () => {
+    copy.mockImplementation(() => {
 
-    await act(async () => {
-      history.push(testPathMealCorba);
     });
 
-    const buttonSharetRecipe = await screen.findByTestId(TestIdBtnRecipeShare);
-    expect(buttonSharetRecipe).toBeInTheDocument();
+    renderWithRouterAndRedux(
+      <App />,
+      { initialEntries: [testPathMealCorba] },
+    );
 
-    // userEvent.click(buttonStartRecipe);
-    // expect(history.location.pathname).toBe('/meals/52977/in-progress');
+    const buttonSharedRecipe = await screen.findByTestId(TestIdBtnRecipeShare);
+    expect(buttonSharedRecipe).toBeInTheDocument();
+
+    userEvent.click(buttonSharedRecipe);
+    await waitFor(() => {
+      expect(copy).toBeCalled();
+    });
+
+    await waitFor(async () => {
+      expect(await screen.findByText(/link copied!/i)).toBeInTheDocument();
+    });
   });
-  it('5.<Meals>Testa botão FavoriteRecipe', async () => {
-    const { history } = renderWithRouterAndRedux(<App />);
 
-    await act(async () => {
-      history.push(testPathMealCorba);
-    });
+  it('5. <Meals> Testa botão FavoriteRecipe', async () => {
+    renderWithRouterAndRedux(
+      <App />,
+      { initialEntries: [testPathMealCorba] },
+    );
 
     const buttonFavoriteRecipe = await screen.findByTestId(TestIdBtnRecipeFavorite);
     expect(buttonFavoriteRecipe).toBeInTheDocument();
+    expect(buttonFavoriteRecipe.src).toContain('http://localhost/whiteHeartIcon.svg');
 
-    // userEvent.click(buttonFavoriteRecipe);
-    // expect(history.location.pathname).toBe('/meals/52977/in-progress');
+    userEvent.click(buttonFavoriteRecipe);
+    expect(buttonFavoriteRecipe.src).toContain('http://localhost/blackHeartIcon.svg');
+  });
+
+  it('6. <Detail> Se FavoriteRecipe <WhiteHeart> não está em local storage', async () => {
+    jest.mock('../services/localStorage');
+
+    renderWithRouterAndRedux(
+      <App />,
+      { initialEntries: [testPathMealCorba] },
+    );
+
+    const buttonFavoriteRecipeWhite = await screen.findByTestId(TestIdBtnRecipeFavorite);
+
+    expect(buttonFavoriteRecipeWhite.textContent).toBe('');
+    expect(buttonFavoriteRecipeWhite).toBeInTheDocument();
   });
 });
 
-// Teste de componente Details.test: Jéssica Pironato e Patrick Fonseca;
+// Teste de componente Details.test: Jéssica Pironato, Josiane Oliveira e Patrick Fonseca;
+
+// npm run test-coverage -- --collectCoverageFrom=src/components/Details.jsx
+// npm run test Details.test.js
+
+// Aguardando finalização função de desativar botão de finish recipe

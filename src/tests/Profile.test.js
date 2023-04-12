@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import App from '../App';
-import renderWithRouterAndRedux from '../services/rwrar';
+import renderWithRouterAndRedux from './utils/rwrar';
 import Profile from '../pages/Profile';
 import { getUserOnStorage } from '../services/localStorage';
 

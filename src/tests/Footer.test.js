@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import renderWithRouterAndRedux from '../services/rwrar';
+import renderWithRouterAndRedux from './utils/rwrar';
 
 describe('.: Testa página <Meals> :.', () => {
   const TestEmail = 'test@example.com';

@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 import { legacy_createStore as createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { createMemoryHistory } from 'history';
-import rootReducer from '../redux/reducers/index';
+import rootReducer from '../../redux/reducers/index';
 
 /**
 * @example

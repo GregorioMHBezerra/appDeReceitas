@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { filterRecipes, clearState } from '../redux/actions';
+import { apiRequestCategory, apiRequestFiltered } from '../services/coffeAndBread';
+import { idPathname } from '../tests/utils/helpers';
 
 class CategoryButtons extends Component {
   state = {
@@ -9,32 +11,18 @@ class CategoryButtons extends Component {
   };
 
   async componentDidMount() {
-    const request = await this.apiRequest();
+    const { history: { location: { pathname } } } = this.props;
+    const request = await apiRequestCategory(pathname);
     this.setState({
       request,
     });
   }
 
-  apiRequest = async () => {
-    const { history } = this.props;
-    const urlApi = history.location.pathname === '/meals' ? 'https://www.themealdb.com/api/json/v1/1/list.php?c=list' : 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list';
-    const response = await fetch(urlApi);
-    const data = await response.json();
-    return Object.values(data)[0];
-  };
-
   apiFiltered = async (filter) => {
     const { history: { location: { pathname } }, dispatch } = this.props;
-
-    const reqMeal = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${filter}`;
-    const reqDrink = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${filter}`;
-
-    const urlApi = pathname === '/meals' ? reqMeal : reqDrink;
-    const response = await fetch(urlApi);
-    const data = await response.json();
-    console.log(data);
-    const foodOrDrink = pathname === '/meals' ? 'meals' : 'drinks';
-    dispatch(filterRecipes(data[foodOrDrink]));
+    const { foodOrDrink } = idPathname(pathname);
+    const result = await apiRequestFiltered(pathname, filter);
+    dispatch(filterRecipes(result[foodOrDrink]));
   };
 
   render() {

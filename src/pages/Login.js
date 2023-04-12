@@ -14,13 +14,22 @@ class Login extends Component {
     history.push('/meals');
   };
 
+  // apresentacao = () => {
+  //   const { history } = this.props;
+  //   history.push('/apresentacao');
+  // };
+
   onClickHandler = async () => {
     // const { dispatch } = this.props;
     const { email } = this.state;
     // dispatch(updatePersonalInfo(this.state));
     // const token = await fecthToken();
     setUserOnStorage({ email });
+    // if (email === 'adm@apresentacao.com') {
+    //   this.apresentacao();
+    // } else {
     this.onClickSettings();
+    // }
   };
 
   handleChange = ({ target }) => {

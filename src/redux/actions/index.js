@@ -5,6 +5,8 @@ export const BTN_SEARCH = 'BTN_SEARCH';
 export const CLEAR_STATE = 'CLEAR_STATE';
 export const IN_PROGRESS_RECIPES = 'IN_PROGRESS_RECIPES';
 export const API_CARROCEL = 'API_CARROCEL';
+export const SUM_INGREDIENT = 'SUM_INGREDIENT';
+export const SUB_INGREDIENT = 'SUB_INGREDIENT';
 export const API_RESULT_FILTER = 'API_RESULT_FILTER';
 export const RECIPE_DETAILS = 'RECIPE_DETAILS';
 
@@ -45,6 +47,12 @@ export const progressRecipes = (idRecipe, mealOrDrink) => ({
   type: IN_PROGRESS_RECIPES,
   idRecipe,
   mealOrDrink,
+});
+export const checkIngredientSum = () => ({
+  type: SUM_INGREDIENT,
+});
+export const checkIngredientSub = () => ({
+  type: SUB_INGREDIENT,
 });
 
 // Requisito 2-6: group Programming André Porto,Gregório Bezerra,Jéssica Pironato, Josiane Oliveira, Patrick Fonseca;

@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import RecipeInProgress from '../components/RecipeInProgress';
 
 class DrinkInProgress extends Component {
   render() {
-    // const { nameState } = this.props;
+    const { history } = this.props;
     return (
-      <RecipeInProgress />
+      <RecipeInProgress history={ history } />
     );
   }
 }
 
-// DrinkInProgress.propTypes = {
-//   nameState: PropTypes.string,
-// }.isRequired;
+DrinkInProgress.propTypes = {
+  history: PropTypes.string,
+}.isRequired;
 
 export default DrinkInProgress;
 

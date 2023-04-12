@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import App from '../App';
-import renderWithRouterAndRedux from '../services/rwrar';
+import renderWithRouterAndRedux from './utils/rwrar';
 
 describe('Testes Login', () => {
   const email = 'alguem@email.com';

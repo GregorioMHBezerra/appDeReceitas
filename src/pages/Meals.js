@@ -14,7 +14,6 @@ class Meals extends Component {
       <div>
         <Header title="Meals" history={ history } />
         { btnSearch && <SearchBar history={ history } />}
-
         <h1>Receitas</h1>
         <Recipes history={ history } />
         <div>

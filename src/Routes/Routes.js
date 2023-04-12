@@ -11,6 +11,7 @@ import MealsDetails from '../pages/MealsDetails';
 import DrinksDetails from '../pages/DrinksDetails';
 import MealInProgress from '../pages/MealInProgress';
 import DrinkInProgress from '../pages/DrinkInProgress';
+import Apresentacao from '../pages/Apresentacao';
 
 class Routes extends Component {
   render() {
@@ -18,6 +19,7 @@ class Routes extends Component {
       <Switch>
         <Route exact path="/" component={ Login } />
         <Route exact path="/meals" component={ Meals } />
+        <Route exact path="/apresentacao" component={ Apresentacao } />
         <Route exact path="/meals/:id" component={ MealsDetails } />
         <Route exact path="/drinks/:id" component={ DrinksDetails } />
         <Route exact path="/drinks" component={ Drinks } />

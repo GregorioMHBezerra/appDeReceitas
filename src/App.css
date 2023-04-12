@@ -95,3 +95,7 @@ footer {
   right: 0;
   top: 0;
 }
+
+.risk {
+  text-decoration: line-through solid black;
+}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CategoryButtons from './CategoryButtons';
+import { apiRequestRecipes } from '../services/coffeAndBread';
 
 class Meals extends Component {
   state = {
@@ -9,21 +10,12 @@ class Meals extends Component {
   };
 
   async componentDidMount() {
-    const result = await this.didMountApiRequest();
+    const { history: { location: { pathname } } } = this.props;
+    const result = await apiRequestRecipes(pathname);
     this.setState({
       apiResultLocal: result,
     });
   }
-
-  didMountApiRequest = async () => {
-    const { history: { location: { pathname } } } = this.props;
-    const urlFood = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-    const urlDrink = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-    const urlApi = pathname === '/meals' ? urlFood : urlDrink;
-    const response = await fetch(urlApi);
-    const data = await response.json();
-    return Object.values(data)[0];
-  };
 
   render() {
     const {
