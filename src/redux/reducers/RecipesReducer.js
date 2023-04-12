@@ -1,4 +1,4 @@
-import { IN_PROGRESS_RECIPES } from '../actions';
+import { IN_PROGRESS_RECIPES, SUM_INGREDIENT, SUB_INGREDIENT } from '../actions';
 // import {
 //   getKeyOnStorage,
 //   IN_PROGRESS_RECIPES_KEY,
@@ -6,6 +6,7 @@ import { IN_PROGRESS_RECIPES } from '../actions';
 
 const INITIAL_STATE = {
   progressRecipes: { meals: [], drinks: [] },
+  totalCheckedIngredient: 0,
 };
 
 const recipesReducer = (state = INITIAL_STATE, action) => {
@@ -21,6 +22,17 @@ const recipesReducer = (state = INITIAL_STATE, action) => {
     };
     // { ...atualStorage,
     //   [mealOrDrink]: { ...atualStorage[mealOrDrink], ...progressResult } }
+
+  case SUM_INGREDIENT:
+    return {
+      ...state,
+      totalCheckedIngredient: state.totalCheckedIngredient + 1,
+    };
+  case SUB_INGREDIENT:
+    return {
+      ...state,
+      totalCheckedIngredient: state.totalCheckedIngredient - 1,
+    };
   default:
     return state;
   }

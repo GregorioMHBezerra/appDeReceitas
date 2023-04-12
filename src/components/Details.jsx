@@ -115,8 +115,6 @@ class RecipeDetails extends Component {
             />
           )}
 
-          {copyText && <span>Link copied!</span>}
-
           { recipeDetails2[1].map((detail, index) => (
             // O index na key pode dar muitos erros
             detail.length > 1 ? (
@@ -158,10 +156,10 @@ class RecipeDetails extends Component {
             </button>
           )}
 
+          {copyText && <span>Link copied!</span>}
           <div className="buttonsTopRecipe">
             <button
               className="buttonShareRecipe"
-              // data-testid="share-btn"
               onClick={ () => {
                 copy(`http://localhost:3000${history.location.pathname}`);
                 this.setState({ copyText: true });

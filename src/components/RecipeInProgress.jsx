@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import copy from 'clipboard-copy';
 import {
   modifyDoneRecipeOnStorage,
   modifyFavoriteOnStorage,
@@ -17,11 +18,13 @@ import { idPathname } from '../tests/utils/helpers';
 import { apiRequestInProgress } from '../services/coffeAndBread';
 import Input from './Input';
 
+const deleteEndUrl = -12;
+
 class RecipeInProgress extends Component {
   state = {
     favorite: false,
     recipeDetails: [],
-    // checkedList: [],
+    copyText: false,
   };
 
   async componentDidMount() {
@@ -56,20 +59,14 @@ class RecipeInProgress extends Component {
     this.setState({ favorite: beOrNotBeFavorite, recipeDetails: newResult });
   }
 
-  // handleCheckedIngredient = ({ target }) => {
-  //   const { recipeDetails, checkedList } = this.state;
-  //   const { name, value } = target;
-  //   const result = target.type === 'checkbox' ? target.checked : value;
-  //   // const checkList2 = { ...checkedList, [name]: result };
-  //   this.setState((i) => ({
-  //     checkedList: [ ...i.checkedList, [name]: result ],
-  //   }));
-  //   // console.log(checkList2);
-  //   // modifyProgressRecipeOnStorage(recipeDetails[0], checkList2);
-  // };
+  enableDisabled = () => {
+    const { totalCheckedIngredient } = this.props;
+    const { recipeDetails } = this.state;
+    return totalCheckedIngredient > recipeDetails[1].length;
+  };
 
   render() {
-    const { recipeDetails, favorite } = this.state;
+    const { recipeDetails, favorite, copyText } = this.state;
     const { history } = this.props;
     return (
       <div>
@@ -104,34 +101,18 @@ class RecipeInProgress extends Component {
                         nameLabel={ ingredient }
                         dataTestId={ `${index}-ingredient-step` }
                       />
-                      // <label
-                      //   data-testid=
-                      //   htmlFor="ingredient"
-                      //
-                      //   // className={ checkedList.length > 0 && Object
-                      //   //   .values(checkedList)[0][ingredient] === true ? 'risk' : '' }
-                      //   className={ checkedList[ingredient] ? 'risk' : '' }
-                      // >
-                      //   {ingredient}
-                      //   <input
-                      //     type="checkbox"
-                      //     onClick={ (e) => this.handleCheckedIngredient(e) }
-                      //     name={ ingredient }
-                      //     value={ checkedList[ingredient] }
-                      //   />
-                      // </label>
                     );
                   }
                   return null;
                 })}
             </form>
+            {copyText && <h3>Link copied!</h3>}
             <div className="buttonsTopRecipe">
               <button
                 className="buttonShareRecipe"
-                // data-testid="share-btn"
                 onClick={ () => {
-                  // copy(`http://localhost:3000${history.location.pathname}`);
-                  // this.setState({ copyText: true });
+                  copy(`http://localhost:3000${(history.location.pathname.slice(0, deleteEndUrl))}`);
+                  this.setState({ copyText: true });
                 } }
               >
                 <img
@@ -156,6 +137,7 @@ class RecipeInProgress extends Component {
                 />
               </button>
             </div>
+
             <button
               data-testid="finish-recipe-btn"
               type="button"
@@ -163,10 +145,12 @@ class RecipeInProgress extends Component {
                 recipeDetails[0],
                 new Date().toDateString(),
               ) }
+              disabled={ this.enableDisabled() }
             >
               Finish Recipe
 
             </button>
+
           </div>
         )}
       </div>
@@ -182,6 +166,7 @@ RecipeInProgress.propTypes = {
 const mapStateToProps = (state) => ({
   recipeDetails: state.filterReducer.recipeDetails,
   progressRecipes: state.recipesReducer.progressRecipes,
+  totalCheckedIngredient: state.recipesReducer.totalCheckedIngredient,
 });
 
 export default connect(mapStateToProps)(RecipeInProgress);
