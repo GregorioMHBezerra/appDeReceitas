@@ -143,7 +143,8 @@ class RecipeInProgress extends Component {
               type="button"
               onClick={ () => modifyDoneRecipeOnStorage(
                 recipeDetails[0],
-                new Date().toDateString(),
+                new Date(),
+                history.push('/done-recipes'),
               ) }
               disabled={ this.enableDisabled() }
             >
